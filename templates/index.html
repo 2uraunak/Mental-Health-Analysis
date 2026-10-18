@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mental Health Sentiment Analysis</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0b0f19; color: #f8fafc; margin: 0; padding: 30px; }
+        .container { max-width: 1050px; margin: 0 auto; }
+        h1 { color: #818cf8; margin-bottom: 6px; }
+        .subtitle { color: #94a3b8; margin-bottom: 24px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .card { background: #111827; border: 1px solid #1f2937; border-radius: 14px; padding: 24px; }
+        textarea { width: 100%; height: 230px; padding: 14px; border-radius: 8px; border: 1px solid #374151; background: #0f172a; color: #fff; box-sizing: border-box; font-family: inherit; font-size: 14px; resize: vertical; }
+        button { background: #6366f1; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 14px; }
+        button:hover { background: #4f46e5; }
+        .status-box { background: #1e293b; border-radius: 10px; padding: 18px; margin-bottom: 16px; }
+        .state-title { font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+        .support-box { background: #064e3b; border: 1px solid #10b981; border-radius: 10px; padding: 16px; margin-top: 16px; }
+        .bar-row { display: flex; align-items: center; margin-bottom: 8px; font-size: 13px; color: #cbd5e1; }
+        .bar-bg { flex: 1; height: 10px; background: #0f172a; border-radius: 5px; margin: 0 10px; overflow: hidden; }
+        .bar-fill { height: 100%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Mental Health Sentiment Analysis (RoBERTa AI)</h1>
+        <p class="subtitle">Natural Language Processing Pipeline for Emotional Wellbeing & Clinical Valence Screening</p>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Text / Journal Ingestion</h2>
+                <form action="/analyze" method="POST">
+                    <textarea name="journal_text" placeholder="Share your thoughts, feelings, or paste social posts for psychological sentiment assessment..." required>{{ input_text or '' }}</textarea>
+                    <button type="submit">🔬 Analyze Emotional Sentiment</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Psychological Telemetry</h2>
+                {% if analyzed %}
+                <div class="status-box" style="border-left: 5px solid {{ status_color }};">
+                    <div class="state-title" style="color: {{ status_color }};">{{ state }}</div>
+                    <div style="color: #cbd5e1; font-weight: bold; margin-bottom: 8px;">Confidence: {{ confidence }}%</div>
+                    <p style="font-size: 13px; color: #94a3b8; line-height: 1.5; margin: 0;">{{ findings }}</p>
+                </div>
+
+                <h3>Softmax Class Probability Breakdown</h3>
+                {% for name, val in dist %}
+                <div class="bar-row">
+                    <span style="width: 100px;">{{ name }}</span>
+                    <div class="bar-bg">
+                        <div class="bar-fill" style="width: {{ val }}%; background: {{ status_color if loop.first else '#6366f1' }};"></div>
+                    </div>
+                    <span style="width: 45px; text-align: right;">{{ val }}%</span>
+                </div>
+                {% endfor %}
+
+                <div class="support-box">
+                    <div style="font-weight: bold; color: #10b981; margin-bottom: 4px;">🤝 Certified 24x7 Mental Health Resources:</div>
+                    <div style="font-size: 13px; color: #e2e8f0;">• Tele-MANAS (Govt of India Helpline): <strong>14416</strong></div>
+                    <div style="font-size: 13px; color: #e2e8f0;">• Vandrevala Foundation Crisis Support: <strong>9999 666 555</strong></div>
+                </div>
+                {% else %}
+                <p style="color:#64748b; text-align:center; padding: 60px 0;">Submit journal or post text to classify cognitive sentiment indicators.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
